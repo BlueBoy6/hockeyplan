@@ -19,6 +19,7 @@ export default function App() {
 
 	const [playing, setPlaying] = useState(false);
 	const [players, setPlayers] = useState([]);
+	const [speed, setSpeed] = useState(50);
 
 	const play = () => setPlaying(!playing);
 
@@ -39,7 +40,7 @@ export default function App() {
 		const newPlayer = {
 			id: nanoid(),
 			name: `Joueur ${players.length + 1}`,
-			path: [{x: 10, y: 10}],
+			path: [{ x: 10, y: 10 }],
 			color: randomColor(),
 		};
 		setPlayers([...players, newPlayer]);
@@ -54,6 +55,8 @@ export default function App() {
 		setPlayers(playersWithNewPath);
 	};
 
+	const setPlayersFromOptions = () => {};
+
 	return (
 		<div className='App' style={appStyle}>
 			{players.length} joueurs
@@ -63,6 +66,9 @@ export default function App() {
 					playing={playing}
 					player={player}
 					addPosition={addPosition}
+					speed={speed}
+					players={players}
+					setPlayers={setPlayersFromOptions}
 				/>
 			))}
 			<ControllButtons
@@ -70,6 +76,9 @@ export default function App() {
 				play={play}
 				reset={reset}
 				addPlayer={addPlayer}
+				speed={speed}
+				setSpeed={setSpeed}
+				players={players}
 			/>
 		</div>
 	);

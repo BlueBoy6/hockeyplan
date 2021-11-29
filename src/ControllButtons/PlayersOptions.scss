@@ -1,0 +1,16 @@
+.player-options{
+    margin: 8px 0;
+    .player-option{
+        border-radius: 50px;
+        font-size: 10px;
+        padding: 3px;
+        max-width: 15px;
+        max-height: 15px;
+        min-width: 15px;
+        min-height: 15px;
+        display: grid;
+        align-content: center;
+        cursor: pointer;
+        color: #ffffff
+    }
+}
