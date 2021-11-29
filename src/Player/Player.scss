@@ -1,0 +1,43 @@
+.positionCatcher{
+    position: absolute;
+    top: 0;
+    left: 0;
+    user-select: none;
+    &.selected{
+        background: rgba(255,255,255, 0.1);
+        width: 100vw;
+        height: 100vh;
+        left: 0;
+        top: 0;
+    }
+
+
+    .player{
+        max-width: 15px;
+        max-height: 15px;
+        position: absolute;
+        z-index: 6;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 25px;
+        border: 8px solid #FFFFFF;
+        transform: translateY(calc(-50% + 4px)) translateX(calc(-50% + 4px));
+        
+        &.selected{
+            box-shadow: 0px 0px 20px 10px rgba(65, 174, 201, 0.75);
+        }
+    }
+
+    .futurPositions{
+        opacity: 1;
+        position: absolute;
+        z-index: 5;
+        width: 8px;
+        height: 8px;
+        border-radius: 10px;
+    }
+}
+
+
+
+
