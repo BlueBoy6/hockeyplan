@@ -7,7 +7,7 @@
     box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.15);
     background: #ffffff;
     border-radius: 5px;
-    .actionnable-button{
+    .button{
         padding: 3px;
         margin-bottom: 5px;
         border: none;
@@ -15,6 +15,7 @@
         color: #ffffff;
         border-radius: 5px;
         transition: 0.15s;
+        cursor: pointer;
         &:last-child{
             margin-bottom: 0px;
         }

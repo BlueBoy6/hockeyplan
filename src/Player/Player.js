@@ -65,7 +65,6 @@ export default function Player({ playing, player, addPosition, speed }) {
 			>
 				🏒
 			</div>
-			{playerSelected && <PlayerOptions players={players} />}
 			{playerSelected &&
 				player.path.map((pos, index) => (
 					<div

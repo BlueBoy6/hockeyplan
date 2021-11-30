@@ -1,16 +1,25 @@
 .player-options{
     margin: 8px 0;
+    max-height: calc(100vh - 10px);
     .player-option{
-        border-radius: 50px;
+        border-radius: 5px;
         font-size: 10px;
         padding: 3px;
-        max-width: 15px;
-        max-height: 15px;
-        min-width: 15px;
-        min-height: 15px;
         display: grid;
         align-content: center;
         cursor: pointer;
         color: #ffffff
+    }
+    .options{
+        display: grid;
+        margin-top: 5px;
+        border-radius: 5px;
+        padding: 5px;
+        & > * {
+            margin-bottom: 5px;
+            &:last-child{
+                margin-bottom: 0px;
+            }
+        }
     }
 }
