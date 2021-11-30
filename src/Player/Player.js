@@ -1,11 +1,19 @@
 import { useState, useEffect, createRef } from "react";
+import { debounce } from "lodash";
 import "./Player.scss";
 
-export default function Player({ playing, player, addPosition, speed }) {
+export default function Player({
+	playing,
+	player,
+	addPosition,
+	speed,
+	timelapse,
+	pathShowed,
+}) {
 	const startPosition = player.path[0] || 0;
 	const myPoint = createRef();
 	const [playerSelected, setPlayerSelected] = useState(false);
-	const [isMouseDown, setMouseDown] = useState(false);
+	// const [isMouseDown, setMouseDown] = useState(false);
 
 	const playerStyle = {
 		top: `${startPosition.y}px`,
@@ -14,11 +22,11 @@ export default function Player({ playing, player, addPosition, speed }) {
 		boxShadow: playerSelected
 			? `0px 0px 5px 5px ${player.color}`
 			: `0px 0px 1px 1px ${player.color}`,
-		transition: playerSelected ? "0s" : `${speed}ms ease-in-out`,
+		transition: `${speed}ms ease-in-out`,
 	};
 
 	const makeMove = (pos) => {
-		if (myPoint.current !== null && myPoint.current !== undefined) {
+		if (myPoint.current !== null && myPoint.current !== undefined && pos !== undefined) {
 			myPoint.current.style.top = `${pos.y}px`;
 			myPoint.current.style.left = `${pos.x}px`;
 		}
@@ -26,7 +34,6 @@ export default function Player({ playing, player, addPosition, speed }) {
 
 	const selectedPlayer = (event) => {
 		setPlayerSelected(!playerSelected);
-		console.log('try right : ',event)
 		event.stopPropagation();
 	};
 
@@ -38,8 +45,16 @@ export default function Player({ playing, player, addPosition, speed }) {
 		}
 	}
 
-	const dragEvent = (e) => {
-		if (isMouseDown) {
+	// const dragEvent = (e) => {
+	// 	if (isMouseDown && playerSelected) {
+	// 		const pos = { x: e.clientX, y: e.clientY };
+	// 		makeMove(pos);
+	// 		addPosition(player.id, pos);
+	// 	}
+	// };
+
+	const clickPosition = (e) => {
+		if (playerSelected) {
 			const pos = { x: e.clientX, y: e.clientY };
 			makeMove(pos);
 			addPosition(player.id, pos);
@@ -50,11 +65,18 @@ export default function Player({ playing, player, addPosition, speed }) {
 		if (playing) startPlay();
 	}, [playing]);
 
+	useEffect(() => {
+		console.log("timelapse : ", timelapse);
+		console.log(player.path);
+		if (!!player.path.length) makeMove(player.path[Number(timelapse)]);
+	}, [timelapse]);
+
 	return (
 		<div
-			onMouseDown={() => setMouseDown(true)}
-			onMouseUp={() => setMouseDown(false)}
-			onMouseMove={dragEvent}
+			// onMouseDown={() => setMouseDown(true)}
+			// onMouseUp={() => setMouseDown(false)}
+			// onMouseMove={dragEvent}
+			onClick={clickPosition}
 			className={`positionCatcher ${playerSelected ? "selected" : ""}`}
 		>
 			<div
@@ -62,10 +84,11 @@ export default function Player({ playing, player, addPosition, speed }) {
 				onClick={selectedPlayer}
 				ref={myPoint}
 				style={{ ...playerStyle }}
+				data-name-player={player.name}
 			>
 				🏒
 			</div>
-			{playerSelected &&
+			{(playerSelected || pathShowed) &&
 				player.path.map((pos, index) => (
 					<div
 						key={index}
@@ -75,7 +98,9 @@ export default function Player({ playing, player, addPosition, speed }) {
 							left: pos.x + "px",
 						}}
 						className={`futurPositions ${playerSelected ? "showed" : ""}`}
-					/>
+					>
+						{index}
+					</div>
 				))}
 		</div>
 	);

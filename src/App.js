@@ -20,27 +20,34 @@ export default function App() {
 	const [playing, setPlaying] = useState(false);
 	const [players, setPlayers] = useState([]);
 	const [speed, setSpeed] = useState(50);
+	const [timelapseRange, setTimelapseRange] = useState(0);
+	const [timelapse, setTimelapse] = useState(0);
+	const [pathShowed, setPathShowed] = useState(false);
+
 
 	const play = () => setPlaying(!playing);
 
 	const reset = () => {
 		const resetPathPlayers = players.map((player) => ({ ...player, path: [] }));
-		console.log("resetPathPlayers : ", resetPathPlayers);
 		setPlayers(resetPathPlayers);
 	};
+
+	function rgbToHex(r, g, b) {
+		return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+	}
 
 	const randomColor = () => {
 		var r = Math.floor(Math.random() * 256);
 		var g = Math.floor(Math.random() * 256);
 		var b = Math.floor(Math.random() * 256);
-		return `rgb(${r},${g},${b})`;
+		return rgbToHex(r, g, b);
 	};
 
 	const addPlayer = () => {
 		const newPlayer = {
 			id: nanoid(),
 			name: `Joueur`,
-			path: [{ x: 10, y: 10 }],
+			path: [],
 			color: randomColor(),
 		};
 		setPlayers([...players, newPlayer]);
@@ -52,13 +59,15 @@ export default function App() {
 				return { ...player, path: [...player.path, newPlayerPosition] };
 			return player;
 		});
+		const playerWithMaxPath = Math.max(...players.map(p => p.path.length))
+		setTimelapseRange(playerWithMaxPath)
 		setPlayers(playersWithNewPath);
 	};
 
 	return (
 		<div className='App' style={appStyle}>
 			{players.length} joueurs
-			{players.map((player, index) => (
+			{players.map((player) => (
 				<Player
 					key={player.id}
 					playing={playing}
@@ -66,7 +75,8 @@ export default function App() {
 					addPosition={addPosition}
 					speed={speed}
 					players={players}
-					
+					timelapse={timelapse}
+					pathShowed={pathShowed}
 				/>
 			))}
 			<ControllButtons
@@ -78,6 +88,11 @@ export default function App() {
 				setSpeed={setSpeed}
 				players={players}
 				setPlayers={setPlayers}
+				timelapse={timelapse}
+				setTimelapse={setTimelapse}
+				timelapseRange={timelapseRange}
+				pathShowed={pathShowed}
+				setPathShowed={setPathShowed}
 			/>
 		</div>
 	);

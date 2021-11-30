@@ -1,14 +1,15 @@
 import { useState } from "react";
 import "./PlayersOptions.scss";
 
-export default function PlayersOptions({ player, deletePlayer, changeNamePlayer, deleteMovePlayer }) {
-	console.log("options: ", player);
-	const [isOptionOpenned, setOptionOpenned] = useState(false);
-	const openOptionPlayer = () => setOptionOpenned(!isOptionOpenned);
+export default function PlayersOptions({ player, deletePlayer, changeNamePlayer, changeColorPlayer, deleteMovePlayer }) {
 
+	const [isOptionOpenned, setOptionOpenned] = useState(false);
+    
+	const openOptionPlayer = () => setOptionOpenned(!isOptionOpenned);
     const deleteP = () => deletePlayer(player.id)
     const changeName = (e) => changeNamePlayer(player.id, e.target.value)
     const deleteMove = () => deleteMovePlayer(player.id)
+    const changeColor = (e) => changeColorPlayer(player.id, e.target.value)
 
 	return (
 		<div className='player-options'>
@@ -24,7 +25,7 @@ export default function PlayersOptions({ player, deletePlayer, changeNamePlayer,
 					<button onClick={deleteP} className="button">Supprimer joueur</button>
 					<button onClick={deleteMove} className="button">Supprimer le mouvement</button>
                     <input  type="text" placeholder="Nom du joueur" onChange={changeName} value={player.name} />
-                    <input type="color" value={player.color}/>
+                    <input type="color" onChange={changeColor} value={player.color}/>
 				</div>
 			)}
 		</div>
