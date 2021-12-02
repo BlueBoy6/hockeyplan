@@ -13,7 +13,8 @@ export default function PlayersOptions({ player, deletePlayer, changeNamePlayer,
 	const changeColor = (e) => changeColorPlayer(player.id, e.target.value)
 	const changeRole = (roleSelected) => changeRolePlayer(player.id, roleSelected)
 
-	const roles = [{label: "atq"}, {label: 'def'}]
+	const roles = [{ label: "atq" }, { label: 'def' }]
+	console.log(player.role)
 
 	return (
 		<div className='player-options'>
@@ -30,7 +31,7 @@ export default function PlayersOptions({ player, deletePlayer, changeNamePlayer,
 					<button onClick={deleteMove} className="button">Supprimer le mouvement</button>
                     <input  type="text" placeholder="Nom du joueur" onChange={changeName} value={player.name} />
 					<input type="color" onChange={changeColor} value={player.color} />
-					<ButtonsChoices value={player.role} onChange={changeRole} choices={roles}></ButtonsChoices>
+					<ButtonsChoices value={{label: player.role}} onChange={changeRole} choices={roles}></ButtonsChoices>
 				</div>
 			)}
 		</div>

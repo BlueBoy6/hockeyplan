@@ -74,7 +74,6 @@ export default function Player({
 	useEffect(() => {
 		if (!!player.path.length) makeMove(player.path[Number(timelapse)]);
 	}, [timelapse]);
-	console.log(player)
 
 	return (
 		<div
