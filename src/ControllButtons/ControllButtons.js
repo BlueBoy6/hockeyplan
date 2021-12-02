@@ -1,3 +1,4 @@
+import ButtonsChoices from "./buttonsChoices/ButtonsChoices";
 import "./ControllButtons.scss";
 import PlayersOptions from "./PlayersOptions";
 
@@ -15,6 +16,8 @@ export default function ControllButtons({
 	timelapseRange,
 	pathShowed,
 	setPathShowed,
+	boardSelected,
+	setBoardSelected
 }) {
 	const deletePlayer = (playerId) =>
 		setPlayers(players.filter((player) => player.id !== playerId));
@@ -34,6 +37,13 @@ export default function ControllButtons({
 				return player;
 			})
 		);
+	const changeRolePlayer = (playerId, role) =>
+		setPlayers(
+			players.map((player) => {
+				if (player.id === playerId) return { ...player, role: role.label };
+				return player;
+			})
+		);
 
 	const deleteMovePlayer = (playerId) =>
 		setPlayers(
@@ -45,6 +55,8 @@ export default function ControllButtons({
 
 	const togglePathShowed = () => setPathShowed(!pathShowed);
 
+	const boardChoices = [{label: 'Perspective'}, {label: 'Paysage'}]
+
 	return (
 		<div className='controllButtons'>
 			<input
@@ -55,6 +67,7 @@ export default function ControllButtons({
 				max={timelapseRange}
 				onChange={(e) => setTimelapse(e.target.value)}
 			/>
+			<ButtonsChoices choices={boardChoices} value={boardSelected} onChange={setBoardSelected} />
 			<button className='button' onClick={togglePathShowed}>
 				{pathShowed ? "Cacher" : "Montrer"} les parcours
 			</button>
@@ -80,11 +93,12 @@ export default function ControllButtons({
 				players.map((player) => (
 					<PlayersOptions
 						key={player.id}
+						player={{ ...player }}
 						changeNamePlayer={changeNamePlayer}
 						changeColorPlayer={changeColorPlayer}
 						deleteMovePlayer={deleteMovePlayer}
 						deletePlayer={deletePlayer}
-						player={{ ...player }}
+						changeRolePlayer={changeRolePlayer}
 					/>
 				))}
 		</div>

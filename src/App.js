@@ -5,26 +5,26 @@ import "./styles.scss";
 import { nanoid } from "nanoid";
 
 export default function App() {
-	const appStyle = {
-		minHeight: "100vh",
-		minWidth: "100vw",
-		maxHeight: "100vh",
-		maxWidth: "100vw",
-		overflow: "hidden",
-		background: "url('/hockeyplan.jpg') no-repeat 50% 50%",
-		backgroundSize: "contain",
-		backgroundRepeat: "no-repeat",
-		backgroundPosition: "center",
-	};
-
+	
 	const [playing, setPlaying] = useState(false);
 	const [players, setPlayers] = useState([]);
 	const [speed, setSpeed] = useState(50);
 	const [timelapseRange, setTimelapseRange] = useState(0);
 	const [timelapse, setTimelapse] = useState(0);
 	const [pathShowed, setPathShowed] = useState(false);
-
-
+	const [boardSelected, setBoardSelected] = useState({label: 'Perspective'});
+	
+	const appStyle = {
+		minHeight: "100vh",
+		minWidth: "100vw",
+		maxHeight: "100vh",
+		maxWidth: "100vw",
+		overflow: "hidden",
+		backgroundSize: "contain",
+		backgroundPosition: "center",
+		background: `url(${boardSelected.label === 'Perspective'  ? '/perspective.jpg' : '/paysage.png'}) no-repeat 50% 50%`,
+	};
+	
 	const play = () => setPlaying(!playing);
 
 	const reset = () => {
@@ -49,6 +49,7 @@ export default function App() {
 			name: `Joueur`,
 			path: [],
 			color: randomColor(),
+			role: 'def'
 		};
 		setPlayers([...players, newPlayer]);
 	};
@@ -56,7 +57,7 @@ export default function App() {
 	const addPosition = (playerId, newPlayerPosition) => {
 		const playersWithNewPath = players.map((player) => {
 			if (player.id === playerId)
-				return { ...player, path: [...player.path, newPlayerPosition] };
+				return { ...player, path: [...player.path, {...newPlayerPosition, step: player.path.length}] };
 			return player;
 		});
 		const playerWithMaxPath = Math.max(...players.map(p => p.path.length))
@@ -93,6 +94,8 @@ export default function App() {
 				timelapseRange={timelapseRange}
 				pathShowed={pathShowed}
 				setPathShowed={setPathShowed}
+				boardSelected={boardSelected}
+				setBoardSelected={setBoardSelected}
 			/>
 		</div>
 	);

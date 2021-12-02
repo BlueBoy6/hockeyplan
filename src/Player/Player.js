@@ -1,5 +1,4 @@
 import { useState, useEffect, createRef } from "react";
-import { debounce } from "lodash";
 import "./Player.scss";
 
 export default function Player({
@@ -18,12 +17,17 @@ export default function Player({
 	const playerStyle = {
 		top: `${startPosition.y}px`,
 		left: `${startPosition.x}px`,
-		background: player.color,
-		boxShadow: playerSelected
-			? `0px 0px 5px 5px ${player.color}`
-			: `0px 0px 1px 1px ${player.color}`,
+		
+		filter: playerSelected
+			? `drop-shadow(0px 0px 7px ${player.color})`
+			: `drop-shadow(0px 0px 1px ${player.color})`,
 		transition: `${speed}ms ease-in-out`,
 	};
+
+	const playerRole = {
+		background: player.role === 'def' ? player.color : 'transparent',
+		borderBottom: player.role === 'atq' ?`30px solid ${player.color}` : 'none',
+	}
 
 	const makeMove = (pos) => {
 		if (myPoint.current !== null && myPoint.current !== undefined && pos !== undefined) {
@@ -61,15 +65,16 @@ export default function Player({
 		}
 	};
 
+
 	useEffect(() => {
 		if (playing) startPlay();
+		if(player.path.length === 0) makeMove({x: window.innerWidth/2, y: window.innerHeight/2})
 	}, [playing]);
 
 	useEffect(() => {
-		console.log("timelapse : ", timelapse);
-		console.log(player.path);
 		if (!!player.path.length) makeMove(player.path[Number(timelapse)]);
 	}, [timelapse]);
+	console.log(player)
 
 	return (
 		<div
@@ -80,18 +85,18 @@ export default function Player({
 			className={`positionCatcher ${playerSelected ? "selected" : ""}`}
 		>
 			<div
-				className={`player ${playerSelected ? "selected" : ""}`}
+				className={`player ${playerSelected ? "selected" : ""} `}
 				onClick={selectedPlayer}
 				ref={myPoint}
 				style={{ ...playerStyle }}
-				data-name-player={player.name}
 			>
-				🏒
+				<span className='playerName'>{player.name}</span>
+				<span className={`player-role ${player.role}`} style={{ ...playerRole }}/>
 			</div>
 			{(playerSelected || pathShowed) &&
-				player.path.map((pos, index) => (
+				player.path.map((pos) => (
 					<div
-						key={index}
+						key={pos.step}
 						style={{
 							background: player.color,
 							top: pos.y + "px",
@@ -99,7 +104,7 @@ export default function Player({
 						}}
 						className={`futurPositions ${playerSelected ? "showed" : ""}`}
 					>
-						{index}
+						{pos.step}
 					</div>
 				))}
 		</div>

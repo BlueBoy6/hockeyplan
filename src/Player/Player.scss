@@ -14,16 +14,10 @@
     .player{
         display: grid;
         align-content: center;
-        max-width: 15px;
-        max-height: 15px;
         position: absolute;
         z-index: 6;
         cursor: pointer;
-        padding: 5px;
-        border-radius: 25px;
-        border: 8px solid #FFFFFF;
-        transform: translateY(calc(-50% + 4px)) translateX(calc(-50% + 4px));
-        &:before{
+        .playerName{
             content: attr(data-name-player);
             position: absolute;
             transform: translate(calc(-50% + 14px), -30px);
@@ -35,8 +29,20 @@
             border-radius: 5px;
             background: #FFFFFF;
         }
-        &.selected{
-            box-shadow: 0px 0px 20px 10px rgba(65, 174, 201, 0.75);
+        .player-role{
+
+            &.def{
+                min-width: 30px;
+                min-height: 30px;
+                max-width: 30px;
+                max-height: 30px;
+            }
+            &.atq{
+                height: 0;
+                width: 0;
+                border: 20px solid transparent;
+                transform: translateY(calc(-50% + 4px)) translateX(calc(-50% + 12px));
+            }
         }
     }
 
